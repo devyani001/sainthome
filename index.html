@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint IT Student Association</title>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --dark-bg: #1a1a2e;
+            --darker-bg: #16213e;
+            --text-light: #e6e6e6;
+            --text-lighter: #ffffff;
+            --accent-color: #ff6b6b;
+            --sidebar-width: 250px;
+            --navbar-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            color: var(--text-light);
+        }
+
+        .app {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: var(--darker-bg);
+            padding: 0 2rem;
+            height: var(--navbar-height);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar.mobile {
+            position: relative;
+            justify-content: center;
+        }
+
+        .navbar-content {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo img {
+            border-radius: 50%;
+            height: 50px;
+            width: 50px;
+        }
+
+        .logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            background: linear-gradient(to right, var(--text-lighter), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        nav ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        nav ul li a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-color);
+            transition: width 0.3s;
+        }
+
+        nav ul li a:hover::after {
+            width: 100%;
+        }
+
+        /* Mobile Nav Styles */
+        .mobile-menu-toggle {
+            background: none;
+            border: none;
+            color: var(--text-light);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Main Content Styles */
+        .main-content {
+            display: flex;
+            flex: 1;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--darker-bg);
+            padding: 1.5rem;
+            box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+            overflow-y: auto;
+        }
+
+        .sidebar h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            border-bottom: 1px solid var(--primary-color);
+            padding-bottom: 0.5rem;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .sidebar ul li a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block;
+            padding: 0.3rem 0;
+        }
+
+        .sidebar ul li a:hover {
+            color: var(--accent-color);
+            padding-left: 0.5rem;
+        }
+
+        .event-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 3px solid var(--accent-color);
+        }
+
+        .event-card h4 {
+            margin-bottom: 0.5rem;
+            color: var(--text-lighter);
+        }
+
+        .event-card p {
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .event-card button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+        }
+
+        .event-card button:hover {
+            background-color: var(--secondary-color);
+        }
+
+        /* Content Styles */
+        .content {
+            flex: 1;
+            padding: 2rem;
+            background-color: var(--dark-bg);
+        }
+
+        /* Hero Section */
+        .hero-section {
+            position: relative;
+            margin-bottom: 3rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+        }
+
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: brightness(0.7);
+        }
+
+        .hero-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 2rem;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+        }
+
+        .hero-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-lighter);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .cta-button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .cta-button:hover {
+            background-color: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        /* About Section */
+        .about-section {
+            margin-bottom: 3rem;
+        }
+
+        .about-section h2 {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-lighter);
+            position: relative;
+        }
+
+        .about-section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-color);
+        }
+
+        .about-section p {
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            flex: 1;
+            min-width: 150px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            font-size: 2rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card p {
+            font-size: 0.9rem;
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--darker-bg);
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 0 1rem;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            /* Sidebar hidden by default on mobile */
+            .sidebar {
+                position: fixed;
+                height: 100vh;
+                z-index: 90;
+                left: -100%;
+                top: 0;
+                transition: left 0.3s;
+            }
+
+            .sidebar.mobile-visible {
+                left: 0;
+            }
+
+            /* Floating sidebar toggle button */
+            .sidebar-toggle {
+                position: fixed;
+                bottom: 2rem;
+                right: 2rem;
+                background-color: var(--accent-color);
+                color: white;
+                border: none;
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                font-size: 1.3rem;
+                cursor: pointer;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+                z-index: 80;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            /* Navbar mobile menu */
+            nav {
+                display: none;
+            }
+
+            .mobile-nav-visible nav {
+                display: block;
+                margin-top: 2rem;
+            }
+
+            .mobile-nav-visible {
+                height: 100vh;
+                flex-direction: column;
+                justify-content: flex-start;
+                padding-top: 1rem;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 1.5rem;
+                align-items: center;
+            }
+
+            .content {
+                padding-bottom: 6rem;
+            }
+
+            .hero-text h2 {
+                font-size: 1.8rem;
+            }
+
+            .hero-text p {
+                font-size: 1rem;
+            }
+
+            .stats-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .stat-card {
+                min-width: 100%;
+            }
+        }
+
+        /* Desktop-only classes */
+        .desktop-only {
+            display: block;
+        }
+
+        @media (max-width: 768px) {
+            .desktop-only {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="app">
+        <!-- Header/Navbar -->
+        <header class="navbar" id="navbar">
+            <button class="mobile-menu-toggle desktop-only-hidden" id="navToggle">☰</button>
+            <div class="navbar-content">
+                <div class="logo">
+                    <img src="#" alt="Saint Student Association of IT logo featuring a cross and circuit board motif in gold and navy blue" />
+                    <h1>Saint IT Association</h1>
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#about">About Us</a></li>
+                        <li><a href="#events">Events</a></li>
+                        <li><a href="#members">Members</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </header>
+
+        <!-- Main Content with Sidebar -->
+        <div class="main-content">
+            <!-- Sidebar - hidden on mobile by default -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-content">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#resources">Resources</a></li>
+                        <li><a href="#gallery">Photo Gallery</a></li>
+                        <li><a href="#projects">Student Projects</a></li>
+                        <li><a href="#sponsors">Sponsors</a></li>
+                    </ul>
+
+                    <h3>Upcoming Events</h3>
+                    <div class="event-card">
+                        <h4>Tech Seminar</h4>
+                        <p>May 15, 10:00 AM</p>
+                        <button>Register</button>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Sidebar toggle button (mobile only) -->
+            <button class="sidebar-toggle desktop-only-hidden" id="sidebarToggle">☰</button>
+
+            <!-- Main Page Content -->
+            <main class="content">
+                <section id="home" class="hero-section">
+                    <div class="hero-image">
+                        <img src="https://tse4.mm.bing.net/th/id/OIP.6867c2H1NQOLbbI9VqjI4wHaEK?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Group of diverse IT students working together in a modern computer lab with glowing monitors" />
+                    </div>
+                    <div class="hero-text">
+                        <h2>Welcome to Saint IT Student Association</h2>
+                        <p>Connecting minds, innovating futures</p>
+                        <button class="cta-button">Join Us</button>
+                    </div>
+                </section>
+
+                <section id="about" class="about-section">
+                    <h2>About Our Association</h2>
+                    <p>The Saint Student Association of Information Technology is a vibrant community dedicated to fostering academic excellence, professional development, and spiritual growth among IT students.</p>
+                    
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <h3>120+</h3>
+                            <p>Active Members</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>35</h3>
+                            <p>Events Yearly</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>15</h3>
+                            <p>Industry Partners</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section id="events" class="events-section">
+                    <h2>Upcoming Events</h2>
+                    <!-- Events content would go here -->
+                </section>
+
+                <section id="members" class="members-section">
+                    <h2>Our Members</h2>
+                    <!-- Members content would go here -->
+                </section>
+
+                <section id="contact" class="contact-section">
+                    <h2>Contact Us</h2>
+                    <!-- Contact form would go here -->
+                </section>
+            </main>
+        </div>
+
+        <footer class="footer">
+            <p>© 2023 Saint IT Student Association. All rights reserved.</p>
+            <div class="social-links">
+                <a href="#">Facebook</a>
+                <a href="#">Twitter</a>
+                <a href="#">Instagram</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile detection
+            const isMobile = window.innerWidth < 768;
+            
+            // Get DOM elements
+            const navToggle = document.getElementById('navToggle');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const navbar = document.getElementById('navbar');
+            const sidebar = document.getElementById('sidebar');
+            
+            // Handle navbar toggle on mobile
+            if (navToggle) {
+                navToggle.addEventListener('click', function() {
+                    navbar.classList.toggle('mobile-nav-visible');
+                });
+            }
+            
+            // Handle sidebar toggle on mobile
+            if (sidebarToggle) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('mobile-visible');
+                });
+            }
+            
+            // Close mobile menus when clicking outside
+            document.addEventListener('click', function(e) {
+                if (isMobile) {
+                    // Close navbar if open and click is outside
+                    if (navbar.classList.contains('mobile-nav-visible') && 
+                        !navbar.contains(e.target) && 
+                        e.target !== navToggle) {
+                        navbar.classList.remove('mobile-nav-visible');
+                    }
+                    
+                    // Close sidebar if open and click is outside
+                    if (sidebar.classList.contains('mobile-visible') && 
+                        !sidebar.contains(e.target) && 
+                        e.target !== sidebarToggle) {
+                        sidebar.classList.remove('mobile-visible');
+                    }
+                }
+            });
+            
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                const newIsMobile = window.innerWidth < 768;
+                
+                // If switched to desktop, hide mobile menus
+                if (!newIsMobile && isMobile) {
+                    navbar.classList.remove('mobile-nav-visible');
+                    sidebar.classList.remove('mobile-visible');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                        
+                        // Close mobile menus when navigating
+                        if (isMobile) {
+                            navbar.classList.remove('mobile-nav-visible');
+                            sidebar.classList.remove('mobile-visible');
+                        }
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
